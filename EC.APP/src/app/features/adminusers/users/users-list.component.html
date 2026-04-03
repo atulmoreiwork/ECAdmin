@@ -1,0 +1,142 @@
+<div class="p-8 animate-fade-in max-w-7xl mx-auto">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+    <div>
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Users</h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Manage admin access and credentials.</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="inline-flex rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <button (click)="setViewMode('list')"
+          [ngClass]="viewMode === 'list' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300'"
+          class="px-3 py-2 text-sm font-medium transition-colors">
+          List
+        </button>
+        <button (click)="setViewMode('tiles')"
+          [ngClass]="viewMode === 'tiles' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300'"
+          class="px-3 py-2 text-sm font-medium transition-colors border-l border-gray-200 dark:border-gray-700">
+          Tiles
+        </button>
+      </div>
+      <button (click)="addUpdateUser(0)"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition-colors flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+        Add User
+      </button>
+    </div>
+  </div>
+  @if (viewMode === 'list') {
+  <cm-table [tableObject]="tableObject" [sortObj]="sortObj" (pageChangeEvent)="pageChangeEvent($event)"
+    (pageSizeChangeEvent)="pageSizeChangeEvent($event)">
+    <ng-template cmTable name="User Name" let-data="data">
+      <div class="flex items-center gap-3">
+        <div
+          class="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-xs">
+          {{ getUserInitial(data) }}
+        </div>
+        <div>
+          <div class="font-medium text-gray-900 dark:text-white">{{ getUserName(data) }}</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400">{{ data.email }}</div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template cmTable name="Role" let-data="data">
+      <span
+        class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
+        {{ data.roleName }}
+      </span>
+    </ng-template>
+    <ng-template cmTable name="Status" let-data="data">
+      <span [class]="getUserStatusClass(data.status)">
+        {{ data.status }}
+      </span>
+    </ng-template>
+    <ng-template cmTable name="Action" let-data="data">
+      <div class="flex items-center space-x-2 text-sm">
+        <button (click)="addUpdateUser(data.userId)" class="text-gray-400 hover:text-blue-600 transition-colors p-1"
+          title="Edit">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+            </path>
+          </svg>
+        </button>
+        <button (click)="userDelete(data.userId)" class="text-gray-400 hover:text-red-600 transition-colors p-1 ml-2"
+          title="Delete">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+            </path>
+          </svg>
+        </button>
+      </div>
+    </ng-template>
+  </cm-table>
+  } @else {
+  @if (tableObject.rows?.length > 0) {
+  <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm overflow-hidden">
+    <div class="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      @for (item of tableObject.rows; track item.userId) {
+      <article class="user-tile-card">
+        <div class="user-tile-head">
+          <div class="user-avatar">
+            {{ getUserInitial(item) }}
+          </div>
+          <div class="min-w-0">
+            <p class="user-name">{{ getUserName(item) }}</p>
+            <p class="user-email">{{ item.email }}</p>
+          </div>
+        </div>
+        <div class="user-meta">
+          <span class="user-role-badge">
+            {{ item.roleName }}
+          </span>
+          <span [class]="getUserStatusClass(item.status)">{{ item.status }}</span>
+        </div>
+        <div class="user-actions">
+          <button (click)="addUpdateUser(item.userId)" class="user-action user-action-edit" title="Edit">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+              </path>
+            </svg>
+            <span>Edit</span>
+          </button>
+          <button (click)="userDelete(item.userId)" class="user-action user-action-delete" title="Delete">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+              </path>
+            </svg>
+            <span>Delete</span>
+          </button>
+        </div>
+      </article>
+      }
+    </div>
+    <cm-table-pagination [tableObject]="tableObject" (pageChange)="pageChangeEvent($event)"
+      (pageSizeChange)="pageSizeChangeEvent($event)">
+    </cm-table-pagination>
+  </div>
+  } @else {
+  <div class="p-6 text-center text-sm text-gray-500 dark:text-gray-400">No users found.</div>
+  }
+  }
+</div>
+
+
+
+
+<app-popup #popup [config]="popupConfig" (closeEvent)="closePopup()" (buttonClick)="handlePopupAction($event)">
+
+  @if(popupConfig.popupFunctionalityType === 'addeditUser'){
+  <app-users-add-edit #addEditUser (close)="closePopup()" [id]="selectedUserId" (addedited)="onUserAddEdited()">
+  </app-users-add-edit>
+  }
+
+  @if (popupConfig.popupFunctionalityType === 'delete') {
+  <app-user-delete #deleteUser (close)="closePopup()" [userId]="selectedUserId"
+    (deleted)="onUserDelete()"></app-user-delete>
+  }
+</app-popup>

@@ -1,0 +1,129 @@
+.customer-tile-card {
+  background: linear-gradient(155deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+  padding: 1rem;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.customer-tile-card:hover {
+  border-color: #93c5fd;
+  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.16);
+  transform: translateY(-2px);
+}
+
+.customer-tile-head {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.customer-avatar {
+  align-items: center;
+  background: linear-gradient(140deg, #dbeafe 0%, #bfdbfe 100%);
+  border-radius: 9999px;
+  color: #1d4ed8;
+  display: flex;
+  font-size: 0.88rem;
+  font-weight: 700;
+  height: 2.6rem;
+  justify-content: center;
+  width: 2.6rem;
+}
+
+.customer-name {
+  color: #111827;
+  font-size: 0.92rem;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.customer-email {
+  color: #6b7280;
+  font-size: 0.76rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.customer-meta {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+}
+
+.customer-phone {
+  color: #6b7280;
+  font-size: 0.77rem;
+}
+
+.customer-actions {
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  gap: 0.55rem;
+  padding-top: 0.78rem;
+}
+
+.customer-action {
+  align-items: center;
+  border-radius: 0.6rem;
+  display: inline-flex;
+  flex: 1;
+  font-size: 0.78rem;
+  font-weight: 600;
+  gap: 0.32rem;
+  justify-content: center;
+  padding: 0.45rem 0.2rem;
+}
+
+.customer-action-edit {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+}
+
+.customer-action-delete {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+}
+
+:host-context(.dark) .customer-tile-card {
+  background: linear-gradient(155deg, #111827 0%, #0f172a 100%);
+  border-color: #334155;
+}
+
+:host-context(.dark) .customer-name {
+  color: #f9fafb;
+}
+
+:host-context(.dark) .customer-email,
+:host-context(.dark) .customer-phone {
+  color: #9ca3af;
+}
+
+:host-context(.dark) .customer-avatar {
+  background: linear-gradient(140deg, rgba(59, 130, 246, 0.35) 0%, rgba(96, 165, 250, 0.25) 100%);
+  color: #bfdbfe;
+}
+
+:host-context(.dark) .customer-actions {
+  border-color: #334155;
+}
+
+:host-context(.dark) .customer-action-edit {
+  background: rgba(37, 99, 235, 0.24);
+  border-color: rgba(59, 130, 246, 0.45);
+  color: #93c5fd;
+}
+
+:host-context(.dark) .customer-action-delete {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(248, 113, 113, 0.38);
+  color: #fca5a5;
+}

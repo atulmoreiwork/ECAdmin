@@ -1,0 +1,192 @@
+<div class="p-8 animate-fade-in max-w-7xl mx-auto">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+    <div>
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Products</h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Manage catalog, variants, and inventory.</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="inline-flex rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <button (click)="setViewMode('list')"
+          [ngClass]="viewMode === 'list' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300'"
+          class="px-3 py-2 text-sm font-medium transition-colors">
+          List
+        </button>
+        <button (click)="setViewMode('tiles')"
+          [ngClass]="viewMode === 'tiles' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300'"
+          class="px-3 py-2 text-sm font-medium transition-colors border-l border-gray-200 dark:border-gray-700">
+          Tiles
+        </button>
+      </div>
+      <button (click)="AddEditProduct(0)"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition-colors flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+        Add Product
+      </button>
+    </div>
+  </div>
+
+
+  <div
+    class="bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm mb-6 flex flex-wrap gap-4 items-center transition-colors">
+    <div class="relative flex-1 min-w-[240px]">
+      <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+      </span>
+      <input type="text" placeholder="Search by name" [(ngModel)]="searchText" (input)="onSearchChange()"
+        class="pl-10 pr-4 py-2 w-full border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-shadow bg-white dark:bg-gray-700 dark:text-white dark:placeholder-gray-400">
+    </div>
+
+    <select (change)="onCategoryChange($event)"
+      class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none text-gray-700">
+      <option value="">All Categories</option>
+      @for(cat of categoryList; track cat.categoryId) {
+      <option [value]="cat.categoryId">{{ cat.categoryName }}</option>
+      }
+    </select>
+
+    <select (change)="onStatusChange($event)"
+      class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none text-gray-700">
+      <option value="">Status: All</option>
+      <option value="active">Active</option>
+      <option value="draft">Draft</option>
+      <option value="archived">Archived</option>
+    </select>
+  </div>
+  @if (viewMode === 'list') {
+  <cm-table [tableObject]="tableObject" [sortObj]="sortObj" (pageChangeEvent)="pageChangeEvent($event)"
+    (pageSizeChangeEvent)="pageSizeChangeEvent($event)">
+    <ng-template cmTable name="Product Name" let-data="data">
+      <div class="flex items-center gap-3">
+        <img [src]="data?.urlSlug || defaultProductImageUrl" (error)="onProductImageError($event)" alt="Product image"
+          class="w-10 h-10 rounded-lg object-cover border border-gray-200 dark:border-gray-600 bg-gray-100 dark:bg-gray-800" />
+        <div class="font-medium text-gray-900 dark:text-white">{{ data.productName }}</div>
+      </div>
+    </ng-template>
+    <ng-template cmTable name="Status" let-data="data">
+      <span [class]="getStatusClass(data.status)">
+        <span class="w-1.5 h-1.5 rounded-full mr-1.5" [class]="getStatusDotClass(data.status)">
+        </span>
+        {{ data.status }}
+      </span>
+    </ng-template>
+    <ng-template cmTable name="Quantity" let-data="data">
+      <span
+        [class]="data.stockQuantity < 10 ? 'text-red-600 dark:text-red-400 font-medium' : 'text-gray-600 dark:text-gray-400'">
+        {{ data.stockQuantity }}
+      </span>
+    </ng-template>
+    <ng-template cmTable name="Action" let-data="data">
+      <div class="flex items-center space-x-2 text-sm">
+        <button (click)="AddEditProduct(data.productId)" class="text-gray-400 hover:text-blue-600 transition-colors p-1"
+          title="Edit">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+            </path>
+          </svg>
+        </button>
+        <button (click)="productDelete(data.productId)"
+          class="text-gray-400 hover:text-red-600 transition-colors p-1 ml-2" title="Delete">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+            </path>
+          </svg>
+        </button>
+      </div>
+    </ng-template>
+  </cm-table>
+  } @else {
+  <div
+    class="bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm transition-colors">
+    @if (tableObject.rows?.length > 0) {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      @for (item of tableObject.rows; track item.productId) {
+      <article class="tile-card group">
+        <div class="tile-hero">
+          <img [src]="item?.urlSlug || defaultProductImageUrl" (error)="onProductImageError($event)" alt="Product image"
+            class="tile-image" />
+          <div class="tile-hero-overlay"></div>
+          <div class="tile-hero-top">
+            <span [class]="getStatusClass(item.status)">{{ item.status }}</span>
+            <span class="tile-id">#{{ item.productId }}</span>
+          </div>
+        </div>
+
+        <div class="tile-body">
+          <p class="tile-title">{{ item.productName }}</p>
+          <div class="tile-meta-grid">
+            <div class="tile-meta-card">
+              <p class="tile-meta-label">Price</p>
+              <p class="tile-meta-value">{{ item.price | currency:'USD':'symbol':'1.0-0' }}</p>
+            </div>
+            <div class="tile-meta-card">
+              <p class="tile-meta-label">Quantity</p>
+              <p class="tile-meta-value">{{ item.stockQuantity }}</p>
+            </div>
+          </div>
+          <div class="tile-stock-row">
+            <span class="tile-stock-pill" [ngClass]="getStockToneClass(item.stockQuantity)">
+              {{ getStockLabel(item.stockQuantity) }}
+            </span>
+            <span class="tile-stock-text">Updated live</span>
+          </div>
+        </div>
+
+        <div class="tile-actions">
+          <button (click)="AddEditProduct(item.productId)" class="tile-action-btn tile-action-edit"
+            title="Edit Product">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+              </path>
+            </svg>
+            <span>Edit</span>
+          </button>
+          <button (click)="productDelete(item.productId)" class="tile-action-btn tile-action-delete"
+            title="Delete Product">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+              </path>
+            </svg>
+            <span>Delete</span>
+          </button>
+        </div>
+      </article>
+      }
+    </div>
+    <div class="mt-4 -mx-4 -mb-4">
+      <cm-table-pagination [tableObject]="tableObject" (pageChange)="pageChangeEvent($event)"
+        (pageSizeChange)="pageSizeChangeEvent($event)">
+      </cm-table-pagination>
+    </div>
+    } @else {
+    <div class="p-6 text-center text-sm text-gray-500 dark:text-gray-400">No products found.</div>
+    }
+  </div>
+  }
+</div>
+
+
+
+
+<app-popup #popup [config]="popupConfig" (closeEvent)="closePopup()" (buttonClick)="handlePopupAction($event)">
+  <ng-container>
+    @if(popupConfig.popupFunctionalityType === 'delete'){
+    <app-product-delete #deleteProduct (close)="closePopup()" [productId]="selectedProductId"
+      (deleted)="onCustomerDelete()">
+    </app-product-delete>
+    }
+    @if(popupConfig.popupFunctionalityType === 'addeditProduct'){
+    <app-add-edit-product #addeditProduct (close)="closePopup()" [id]="selectedProductId"
+      (addedited)="onProductAddEdited()">
+    </app-add-edit-product>
+    }
+  </ng-container>
+</app-popup>

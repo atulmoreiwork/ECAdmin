@@ -1,0 +1,239 @@
+.tile-card {
+  background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.tile-card:hover {
+  border-color: #93c5fd;
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.14);
+  transform: translateY(-3px);
+}
+
+.tile-hero {
+  background: linear-gradient(145deg, #dbeafe 0%, #e0f2fe 100%);
+  height: 9rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.tile-image {
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+  width: 100%;
+}
+
+.group:hover .tile-image {
+  transform: scale(1.04);
+}
+
+.tile-hero-overlay {
+  background: linear-gradient(to top, rgba(17, 24, 39, 0.45), rgba(17, 24, 39, 0.06));
+  inset: 0;
+  position: absolute;
+}
+
+.tile-hero-top {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  left: 0;
+  padding: 0.75rem;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.tile-id {
+  backdrop-filter: blur(6px);
+  background: rgba(15, 23, 42, 0.52);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 9999px;
+  color: #f8fafc;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+}
+
+.tile-body {
+  padding: 0.9rem 0.95rem 0.75rem;
+}
+
+.tile-title {
+  color: #0f172a;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 0.7rem;
+}
+
+.tile-meta-grid {
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.tile-meta-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 0.55rem 0.65rem;
+}
+
+.tile-meta-label {
+  color: #64748b;
+  font-size: 0.72rem;
+  margin-bottom: 0.15rem;
+}
+
+.tile-meta-value {
+  color: #0f172a;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.tile-stock-row {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.7rem;
+}
+
+.tile-stock-pill {
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.22rem 0.58rem;
+}
+
+.stock-tone-in {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.stock-tone-low {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.stock-tone-out {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.tile-stock-text {
+  color: #94a3b8;
+  font-size: 0.7rem;
+}
+
+.tile-actions {
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  gap: 0.55rem;
+  padding: 0.75rem 0.95rem 0.9rem;
+}
+
+.tile-action-btn {
+  align-items: center;
+  border-radius: 0.65rem;
+  display: inline-flex;
+  flex: 1;
+  font-size: 0.79rem;
+  font-weight: 600;
+  gap: 0.35rem;
+  justify-content: center;
+  padding: 0.48rem 0.2rem;
+  transition: all 0.2s ease;
+}
+
+.tile-action-edit {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+}
+
+.tile-action-edit:hover {
+  background: #dbeafe;
+}
+
+.tile-action-delete {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+}
+
+.tile-action-delete:hover {
+  background: #fee2e2;
+}
+
+:host-context(.dark) .tile-card {
+  background: linear-gradient(145deg, #0f172a 0%, #111827 100%);
+  border-color: #334155;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.33);
+}
+
+:host-context(.dark) .tile-card:hover {
+  border-color: #60a5fa;
+}
+
+:host-context(.dark) .tile-hero {
+  background: linear-gradient(145deg, #1e3a8a 0%, #0f172a 100%);
+}
+
+:host-context(.dark) .tile-title {
+  color: #f8fafc;
+}
+
+:host-context(.dark) .tile-meta-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+:host-context(.dark) .tile-meta-label {
+  color: #94a3b8;
+}
+
+:host-context(.dark) .tile-meta-value {
+  color: #f1f5f9;
+}
+
+:host-context(.dark) .tile-stock-text {
+  color: #94a3b8;
+}
+
+:host-context(.dark) .stock-tone-in {
+  background: rgba(34, 197, 94, 0.2);
+  color: #86efac;
+}
+
+:host-context(.dark) .stock-tone-low {
+  background: rgba(250, 204, 21, 0.18);
+  color: #fde68a;
+}
+
+:host-context(.dark) .stock-tone-out {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+}
+
+:host-context(.dark) .tile-actions {
+  border-color: #334155;
+}
+
+:host-context(.dark) .tile-action-edit {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(96, 165, 250, 0.5);
+  color: #93c5fd;
+}
+
+:host-context(.dark) .tile-action-delete {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(248, 113, 113, 0.45);
+  color: #fca5a5;
+}

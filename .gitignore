@@ -1,0 +1,92 @@
+############################
+# 🔹 .NET / Visual Studio
+############################
+
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# Rider
+.idea/
+
+############################
+# 🔹 Logs
+############################
+
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+############################
+# 🔹 Environment files
+############################
+
+.env
+.env.*
+appsettings.Development.json
+appsettings.*.json
+
+############################
+# 🔹 ASP.NET Core
+############################
+
+wwwroot/dist/
+wwwroot/lib/
+
+############################
+# 🔹 Angular / Node
+############################
+
+EC.APP/node_modules/
+EC.APP/dist/
+EC.APP/.angular/
+
+############################
+# 🔹 OS Files
+############################
+
+.DS_Store
+Thumbs.db
+
+############################
+# 🔹 Build outputs
+############################
+
+publish/
+out/
+build/
+
+############################
+# 🔹 Database / Local files
+############################
+
+*.mdf
+*.ldf
+*.sqlite
+*.db
+
+############################
+# 🔹 Coverage / Testing
+############################
+
+coverage/
+*.coverage
+*.coveragexml
+
+############################
+# 🔹 Misc
+############################
+
+*.tmp
+*.temp
+*.bak
+*.swp

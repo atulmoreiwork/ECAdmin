@@ -1,0 +1,80 @@
+<div class="flex-1 overflow-y-auto">
+  <form [formGroup]="addEditTenantForm" (ngSubmit)="submitForm()" *ngIf="addEditTenantForm" class="h-full space-y-3">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">
+        Company Name <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="text"
+        formControlName="name"
+        class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow"
+      />
+      <p *ngIf="submitted && f['name'].errors" class="mt-1.5 text-xs text-red-600">
+        Please enter company name
+      </p>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">
+        Domain <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="text"
+        formControlName="domain"
+        class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow"
+        placeholder="company.com"
+      />
+      <p *ngIf="submitted && f['domain'].errors" class="mt-1.5 text-xs text-red-600">
+        Please enter domain
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Plans <span class="text-red-500">*</span>
+        </label>
+        <select
+          formControlName="plans"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow"
+        >
+          <option value="Starter">Starter</option>
+          <option value="Pro">Pro</option>
+          <option value="Enterprise">Enterprise</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Status <span class="text-red-500">*</span>
+        </label>
+        <select
+          formControlName="status"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow"
+        >
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">
+        Users <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="number"
+        formControlName="users"
+        min="0"
+        class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow"
+      />
+      <p *ngIf="submitted && f['users'].errors" class="mt-1.5 text-xs text-red-600">
+        Please enter valid users count
+      </p>
+    </div>
+  </form>
+
+  <div *ngIf="submitted && addTenantError && errorMessage" class="mt-4 px-4 py-3 rounded-lg text-sm bg-red-50 border border-red-200 text-red-800 whitespace-pre-line">
+    {{ errorMessage }}
+  </div>
+</div>

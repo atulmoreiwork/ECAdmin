@@ -1,0 +1,13 @@
+:host {
+  display: block;
+}
+
+/* Card component styles */
+div {
+  transition: all 0.3s ease;
+}
+
+/* Smooth shadow transitions on hover */
+:host-context(.dark) div {
+  color-scheme: dark;
+}

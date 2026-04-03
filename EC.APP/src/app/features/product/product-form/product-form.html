@@ -1,0 +1,127 @@
+<div class="max-w-6xl mx-auto p-6">
+    <h1 class="text-2xl font-semibold mb-6">Add / Edit Product</h1>
+
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+        <!-- Basic Info -->
+        <section class="bg-white p-4 rounded-xl shadow-sm border">
+            <h2 class="text-lg font-medium mb-3">Basic Info</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="text-sm font-medium mb-1">Product Name</label>
+                    <input formControlName="productName" class="w-full border rounded-md px-3 py-2" />
+                </div>
+                <div>
+                    <label class="text-sm font-medium mb-1">Price</label>
+                    <input type="number" formControlName="price" class="w-full border rounded-md px-3 py-2" />
+                </div>
+                <div>
+                    <label class="text-sm font-medium mb-1">Stock Quantity</label>
+                    <input type="number" formControlName="stockQuantity" class="w-full border rounded-md px-3 py-2" />
+                </div>
+                <div>
+                    <label class="text-sm font-medium mb-1">Status</label>
+                    <select formControlName="status" class="w-full border rounded-md px-3 py-2">
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt-4">
+                <label class="text-sm font-medium mb-1">Description</label>
+                <textarea formControlName="description" rows="4" class="w-full border rounded-md px-3 py-2"></textarea>
+            </div>
+        </section>
+
+        <!-- Product Images -->
+        <section class="bg-white p-4 rounded-xl shadow-sm border">
+            <h2 class="text-lg font-medium mb-3">Product Images</h2>
+
+            <div class="border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition"
+                [class.bg-gray-50]="isProductDragOver" (dragover)="$event.preventDefault(); isProductDragOver = true"
+                (dragleave)="isProductDragOver = false" (drop)="onProductDrop($event)">
+                <p class="text-sm mb-2">Drag & Drop images here or click to select</p>
+                <input type="file" multiple accept="image/*" (change)="onProductImageSelect($event)" class="hidden"
+                    #productFile />
+                <button type="button" class="px-3 py-1 border rounded-md hover:bg-gray-50"
+                    (click)="productFile.click()">Browse</button>
+            </div>
+
+            <div class="flex flex-wrap gap-3 mt-4">
+                <div *ngFor="let img of productImages; let i = index"
+                    class="relative w-28 h-28 border rounded-md overflow-hidden">
+                    <img [src]="img.url" class="w-full h-full object-cover" />
+                    <button type="button" (click)="removeProductImage(i)"
+                        class="absolute top-1 right-1 bg-white bg-opacity-80 p-1 rounded">✖</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Variants -->
+        <section class="bg-white p-4 rounded-xl shadow-sm border">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-lg font-medium">Variants</h2>
+                <button type="button" (click)="addVariant()" class="px-3 py-1 border rounded-md hover:bg-gray-50">
+                    + Add Variant
+                </button>
+            </div>
+
+            <div formArrayName="productVariants" class="space-y-4">
+                <div *ngFor="let variant of variants.controls; let vi = index" [formGroupName]="vi"
+                    class="border rounded-md p-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="text-sm font-medium mb-1">Color</label>
+                            <input formControlName="color" class="w-full border rounded-md px-3 py-2" />
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium mb-1">Size</label>
+                            <input formControlName="size" class="w-full border rounded-md px-3 py-2" />
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium mb-1">Price</label>
+                            <input type="number" formControlName="price" class="w-full border rounded-md px-3 py-2" />
+                        </div>
+                    </div>
+
+                    <!-- Variant Images -->
+                    <div class="mt-3 border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition"
+                        [class.bg-gray-50]="isVariantDragOver[vi]"
+                        (dragover)="$event.preventDefault(); isVariantDragOver[vi] = true"
+                        (dragleave)="isVariantDragOver[vi] = false" (drop)="onVariantDrop($event, vi)">
+                        <p class="text-sm mb-2">Drag & Drop variant images here or click to select</p>
+                        <input type="file" multiple accept="image/*" (change)="onVariantImageSelect($event, vi)"
+                            class="hidden" #variantFile />
+                        <button type="button" class="px-3 py-1 border rounded-md hover:bg-gray-50"
+                            (click)="variantFile.click()">
+                            Browse
+                        </button>
+
+                    </div>
+
+                    <div class="flex flex-wrap gap-3 mt-3">
+                        <div *ngFor="let img of variantImages[vi]; let i = index"
+                            class="relative w-20 h-20 border rounded-md overflow-hidden">
+                            <img [src]="img.url" class="object-cover w-full h-full" />
+                            <button type="button" (click)="removeVariantImage(vi, i)"
+                                class="absolute top-1 right-1 bg-white bg-opacity-80 p-1 rounded">✖</button>
+                        </div>
+                    </div>
+
+                    <button type="button" (click)="removeVariant(vi)" class="text-red-600 mt-3 text-sm">Remove
+                        Variant</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="flex items-center gap-3">
+            <button type="submit"
+                class="px-5 py-2 rounded-md bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-200">Save
+                Product</button>
+            <button type="button" (click)="productForm.reset(); productImages=[]; variantImages={};"
+                class="px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                Reset
+            </button>
+        </div>
+    </form>
+</div>

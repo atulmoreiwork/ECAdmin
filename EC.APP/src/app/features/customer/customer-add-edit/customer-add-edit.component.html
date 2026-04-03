@@ -1,0 +1,164 @@
+<form [formGroup]="AddNewCustomerForm" (ngSubmit)="submitForm()" *ngIf="AddNewCustomerForm" class="flex flex-col gap-4">
+  <section class="w-full grid grid-cols-1 gap-4">
+    <div class="bg-white border border-gray-200 rounded-xl shadow-[0_8px_24px_rgba(15,23,42,0.06)] overflow-hidden">
+      <div class="px-4 py-3 border-b border-gray-200 bg-gray-50">
+        <label class="text-[15px] font-semibold text-gray-900">Customer Information</label>
+      </div>
+
+      <div class="p-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="flex flex-col">
+            <label class="mb-1.5 text-xs font-semibold text-gray-700">First Name <span class="text-red-600">*</span></label>
+            <input
+              type="text"
+              formControlName="firstName"
+              placeholder="Enter first name"
+              class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+              [ngClass]="submitted && f['firstName'].errors ? 'border-red-500 focus:border-red-500 focus:ring-red-200' : ''"
+            />
+            <p *ngIf="submitted && f['firstName'].errors" class="mt-1 text-xs text-red-600">Please enter first name</p>
+          </div>
+
+          <div class="flex flex-col">
+            <label class="mb-1.5 text-xs font-semibold text-gray-700">Last Name <span class="text-red-600">*</span></label>
+            <input
+              type="text"
+              formControlName="lastName"
+              placeholder="Enter last name"
+              class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+              [ngClass]="submitted && f['lastName'].errors ? 'border-red-500 focus:border-red-500 focus:ring-red-200' : ''"
+            />
+            <p *ngIf="submitted && f['lastName'].errors" class="mt-1 text-xs text-red-600">Please enter last name</p>
+          </div>
+
+          <div class="flex flex-col">
+            <label class="mb-1.5 text-xs font-semibold text-gray-700">Email <span class="text-red-600">*</span></label>
+            <input
+              type="email"
+              formControlName="email"
+              placeholder="Enter email address"
+              class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+              [ngClass]="submitted && f['email'].errors ? 'border-red-500 focus:border-red-500 focus:ring-red-200' : ''"
+            />
+            <p *ngIf="submitted && f['email'].errors" class="mt-1 text-xs text-red-600">Please enter valid email</p>
+          </div>
+
+          <div class="flex flex-col">
+            <label class="mb-1.5 text-xs font-semibold text-gray-700">Phone Number <span class="text-red-600">*</span></label>
+            <input
+              type="tel"
+              formControlName="phoneNumber"
+              maxlength="10"
+              placeholder="Enter phone number"
+              class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+              [ngClass]="submitted && f['phoneNumber'].errors ? 'border-red-500 focus:border-red-500 focus:ring-red-200' : ''"
+            />
+            <p *ngIf="submitted && f['phoneNumber'].errors" class="mt-1 text-xs text-red-600">Please enter phone number</p>
+          </div>
+
+          <div class="flex flex-col">
+            <label class="mb-1.5 text-xs font-semibold text-gray-700">Password <span class="text-red-600">*</span></label>
+            <input
+              type="password"
+              formControlName="password"
+              placeholder="Enter password"
+              class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+              [ngClass]="submitted && f['password'].errors ? 'border-red-500 focus:border-red-500 focus:ring-red-200' : ''"
+            />
+            <p *ngIf="submitted && f['password'].errors" class="mt-1 text-xs text-red-600">Please enter password</p>
+          </div>
+
+          <div class="flex flex-col">
+            <label class="mb-1.5 text-xs font-semibold text-gray-700">Status <span class="text-red-600">*</span></label>
+            <select
+              formControlName="status"
+              class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+              [ngClass]="submitted && AddNewCustomerForm.get('status')?.invalid ? 'border-red-500 focus:border-red-500 focus:ring-red-200' : ''"
+            >
+              <option value="">Select Status</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+            <p *ngIf="submitted && AddNewCustomerForm.get('status')?.invalid" class="mt-1 text-xs text-red-600">Status is required</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white border border-gray-200 rounded-xl shadow-[0_8px_24px_rgba(15,23,42,0.06)] overflow-hidden">
+      <div class="px-4 py-3 border-b border-gray-200 bg-gray-50">
+        <label class="text-[15px] font-semibold text-gray-900">Address Information</label>
+      </div>
+
+      <div class="p-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="flex flex-col md:col-span-2">
+            <label class="mb-1.5 text-xs font-semibold text-gray-700">Address <span class="text-red-600">*</span></label>
+            <input
+              type="text"
+              formControlName="address"
+              placeholder="Enter street address"
+              class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+              [ngClass]="submitted && f['address'].errors ? 'border-red-500 focus:border-red-500 focus:ring-red-200' : ''"
+            />
+            <p *ngIf="submitted && f['address'].errors" class="mt-1 text-xs text-red-600">Please enter address</p>
+          </div>
+
+          <div class="flex flex-col">
+            <label class="mb-1.5 text-xs font-semibold text-gray-700">City <span class="text-red-600">*</span></label>
+            <input
+              type="text"
+              formControlName="city"
+              placeholder="Enter city"
+              class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+              [ngClass]="submitted && f['city'].errors ? 'border-red-500 focus:border-red-500 focus:ring-red-200' : ''"
+            />
+            <p *ngIf="submitted && f['city'].errors" class="mt-1 text-xs text-red-600">Please enter city</p>
+          </div>
+
+          <div class="flex flex-col">
+            <label class="mb-1.5 text-xs font-semibold text-gray-700">State <span class="text-red-600">*</span></label>
+            <input
+              type="text"
+              formControlName="state"
+              placeholder="Enter state"
+              class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+              [ngClass]="submitted && f['state'].errors ? 'border-red-500 focus:border-red-500 focus:ring-red-200' : ''"
+            />
+            <p *ngIf="submitted && f['state'].errors" class="mt-1 text-xs text-red-600">Please enter state</p>
+          </div>
+
+          <div class="flex flex-col">
+            <label class="mb-1.5 text-xs font-semibold text-gray-700">Country <span class="text-red-600">*</span></label>
+            <input
+              type="text"
+              formControlName="country"
+              placeholder="Enter country"
+              class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+              [ngClass]="submitted && f['country'].errors ? 'border-red-500 focus:border-red-500 focus:ring-red-200' : ''"
+            />
+            <p *ngIf="submitted && f['country'].errors" class="mt-1 text-xs text-red-600">Please enter country</p>
+          </div>
+
+          <div class="flex flex-col">
+            <label class="mb-1.5 text-xs font-semibold text-gray-700">Postal Code <span class="text-red-600">*</span></label>
+            <input
+              type="text"
+              formControlName="postalCode"
+              placeholder="Enter postal code"
+              class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+              [ngClass]="submitted && f['postalCode'].errors ? 'border-red-500 focus:border-red-500 focus:ring-red-200' : ''"
+            />
+            <p *ngIf="submitted && f['postalCode'].errors" class="mt-1 text-xs text-red-600">Please enter postal code</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="w-full flex justify-start" *ngIf="errorMessage">
+    <div class="px-3 py-2 rounded-lg border text-sm bg-red-50 border-red-200 text-red-800">
+      {{ errorMessage }}
+    </div>
+  </section>
+</form>

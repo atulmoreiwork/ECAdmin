@@ -1,0 +1,175 @@
+<form [formGroup]="addNewOrderForm" (ngSubmit)="submitForm()" *ngIf="addNewOrderForm" class="flex flex-col gap-4">
+  <section class="w-full grid grid-cols-1 gap-4 lg:grid-cols-3">
+    <div class="bg-white border border-gray-200 rounded-xl shadow-[0_8px_24px_rgba(15,23,42,0.06)] overflow-hidden">
+      <div class="px-4 py-3 border-b border-gray-200 bg-gray-50">
+        <label class="text-[15px] font-semibold text-gray-900">Order Information</label>
+      </div>
+
+      <div class="p-4 flex flex-col gap-4">
+        <div class="flex flex-col">
+          <label class="mb-1.5 text-xs font-semibold text-gray-700">Order Number</label>
+          <input
+            type="text"
+            [disabled]="isEditMode"
+            formControlName="orderNumber"
+            class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
+          />
+        </div>
+
+        <div class="flex flex-col">
+          <label class="mb-1.5 text-xs font-semibold text-gray-700">Customer</label>
+          <select
+            formControlName="customerId"
+            (change)="changeCustomerDropDown($event)"
+            class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          >
+            <option value="">Select customer</option>
+            <option [value]="item.customerId" *ngFor="let item of customerList">{{ item.firstName }}</option>
+          </select>
+          <p *ngIf="submitted && addNewOrderForm.get('customerId')?.invalid" class="mt-1 text-xs text-red-600">
+            Please select customer
+          </p>
+        </div>
+
+        <div class="flex flex-col">
+          <label class="mb-1.5 text-xs font-semibold text-gray-700">Order Status</label>
+          <select
+            formControlName="status"
+            (change)="changeOrderStatusDropDown($event)"
+            class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          >
+            <option value="">Select status</option>
+            <option [value]="item.id" *ngFor="let item of orderStatusList">{{ item.name }}</option>
+          </select>
+          <p *ngIf="submitted && addNewOrderForm.get('status')?.invalid" class="mt-1 text-xs text-red-600">
+            Please select status
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white border border-gray-200 rounded-xl shadow-[0_8px_24px_rgba(15,23,42,0.06)] overflow-hidden lg:col-span-2">
+      <app-order-items
+        #orderItem
+        [isEditMode]="isEditMode"
+        [productList]="productList"
+        [orderItemsDetails]="orderItemsDetails"
+        (ReturnOrderItemsDetails)="getOrderItemDetails($event)"
+      >
+      </app-order-items>
+    </div>
+
+    <div
+      class="bg-white border border-gray-200 rounded-xl shadow-[0_8px_24px_rgba(15,23,42,0.06)] overflow-hidden"
+      formGroupName="orderShippingAddress"
+    >
+      <div class="px-4 py-3 border-b border-gray-200 bg-gray-50">
+        <label class="text-[15px] font-semibold text-gray-900">Shipping Information</label>
+      </div>
+
+      <div class="p-4 flex flex-col gap-4">
+        <div class="flex flex-col">
+          <label class="mb-1.5 text-xs font-semibold text-gray-700">Address</label>
+          <input
+            type="text"
+            formControlName="address"
+            class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          />
+        </div>
+
+        <div class="flex flex-col">
+          <label class="mb-1.5 text-xs font-semibold text-gray-700">State</label>
+          <input
+            type="text"
+            formControlName="state"
+            class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          />
+        </div>
+
+        <div class="flex flex-col">
+          <label class="mb-1.5 text-xs font-semibold text-gray-700">City</label>
+          <input
+            type="text"
+            formControlName="city"
+            class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          />
+        </div>
+
+        <div class="flex flex-col">
+          <label class="mb-1.5 text-xs font-semibold text-gray-700">Postal Code</label>
+          <input
+            type="text"
+            formControlName="postalCode"
+            class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white border border-gray-200 rounded-xl shadow-[0_8px_24px_rgba(15,23,42,0.06)] overflow-hidden">
+      <div class="px-4 py-3 border-b border-gray-200 bg-gray-50">
+        <label class="text-[15px] font-semibold text-gray-900">Billing Information</label>
+      </div>
+
+      <div class="p-4 flex flex-col gap-4">
+        <div class="flex flex-col">
+          <label class="mb-1.5 text-xs font-semibold text-gray-700">Payment Type</label>
+          <select
+            formControlName="paymentType"
+            (change)="changePaymentTypeDropDown($event)"
+            class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          >
+            <option value="">Select payment type</option>
+            <option [value]="item.id" *ngFor="let item of paymentTypeList">{{ item.name }}</option>
+          </select>
+          <p *ngIf="submitted && addNewOrderForm.get('paymentType')?.invalid" class="mt-1 text-xs text-red-600">
+            Payment type is required.
+          </p>
+        </div>
+
+        <div class="flex flex-col">
+          <label class="mb-1.5 text-xs font-semibold text-gray-700">Payment Status</label>
+          <select
+            formControlName="paymentStatus"
+            (change)="changePaymentStatusDropDown($event)"
+            class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          >
+            <option value="">Select payment status</option>
+            <option [value]="item.id" *ngFor="let item of paymentStatusList">{{ item.name }}</option>
+          </select>
+          <p *ngIf="submitted && addNewOrderForm.get('paymentStatus')?.invalid" class="mt-1 text-xs text-red-600">
+            Payment status is required.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white border border-gray-200 rounded-xl shadow-[0_8px_24px_rgba(15,23,42,0.06)] overflow-hidden">
+      <div class="px-4 py-3 border-b border-gray-200 bg-gray-50">
+        <label class="text-[15px] font-semibold text-gray-900">Customer Information</label>
+      </div>
+      <div class="p-4 flex flex-col gap-2">
+        <p class="text-base font-semibold text-gray-900">{{ customerData.firstName || '-' }} {{ customerData.lastName || '' }}</p>
+        <p class="text-sm">
+          <span class="font-semibold text-gray-800">Address:</span>
+          <span class="text-gray-600"> {{ customerData.address || '-' }} {{ customerData.city || '' }} {{ customerData.state || '' }}</span>
+        </p>
+        <p class="text-sm">
+          <span class="font-semibold text-gray-800">Phone:</span>
+          <span class="text-gray-600"> {{ customerData.phoneNumber || '-' }}</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="w-full flex justify-start" *ngIf="submitted && ErrorResponse">
+    <div
+      class="px-3 py-2 rounded-lg border text-sm"
+      [ngClass]="responseType === 'success'
+        ? 'bg-green-50 border-green-200 text-green-800'
+        : 'bg-red-50 border-red-200 text-red-800'"
+    >
+      {{ ErrorResponse }}
+    </div>
+  </section>
+</form>

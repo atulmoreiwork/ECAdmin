@@ -1,0 +1,254 @@
+<div class="p-8 animate-fade-in max-w-7xl mx-auto">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+    <div>
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Customers</h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">View and manage your customer base.</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="inline-flex rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <button (click)="setViewMode('list')"
+          [ngClass]="viewMode === 'list' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300'"
+          class="px-3 py-2 text-sm font-medium transition-colors">
+          List
+        </button>
+        <button (click)="setViewMode('tiles')"
+          [ngClass]="viewMode === 'tiles' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300'"
+          class="px-3 py-2 text-sm font-medium transition-colors border-l border-gray-200 dark:border-gray-700">
+          Tiles
+        </button>
+      </div>
+      <button (click)="addEditCustomer(0)"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition-colors flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+        Add Customer
+      </button>
+    </div>
+  </div>
+  <section class="page-content hidden">
+    @if (this.tableObject.data.length > 0) {
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
+      @for (customer of this.tableObject.data; track customer.customerId) {
+      <div class="grid grid-rows-[1fr_auto] gap-2 bg-white rounded-xl p-4 border border-primary-300/50 shadow-md">
+        <div>
+          <h2 class="text-lg font-semibold text-gray-800">
+            {{ customer.firstName }} {{ customer.lastName }}
+          </h2>
+          <p class="text-sm text-gray-500 mt-1">{{ customer.email }}</p>
+        </div>
+        <div class="mt-4 flex items-center gap-2">
+          <div class="ml-auto flex items-center gap-2">
+            <button class="btn-primary" (click)="addEditCustomer(customer.customerId)">Edit</button>
+            <button class="btn btn-outline-secondary" (click)="customerDelete(customer.customerId)">Delete</button>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+    }
+    @else {
+    <div
+      class="grid place-content-center bg-white p-4 rounded-lg shadow-sm text-center text-gray-600 py-10 grow shrink-0 basis-[0%] h-full max-h-full">
+      <div class="grid gap-4 items-center">
+        <div class="grid items-center justify-center ">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 782.04441 701.88002"
+            xmlns:xlink="http://www.w3.org/1999/xlink" role="img" class="w-40 fill-primary-500">
+            <path
+              d="M609.48783,100.59015l-25.44631,6.56209L270.53735,187.9987,245.091,194.56079A48.17927,48.17927,0,0,0,210.508,253.17865L320.849,681.05606a48.17924,48.17924,0,0,0,58.61776,34.58317l.06572-.01695,364.26536-93.93675.06572-.01695a48.17923,48.17923,0,0,0,34.58309-58.6178l-110.341-427.87741A48.17928,48.17928,0,0,0,609.48783,100.59015Z"
+              transform="translate(-208.9778 -99.05999)" fill="#f2f2f2" />
+            <path
+              d="M612.94784,114.00532l-30.13945,7.77236L278.68955,200.20385l-30.139,7.77223a34.30949,34.30949,0,0,0-24.6275,41.74308l110.341,427.87741a34.30946,34.30946,0,0,0,41.7431,24.62736l.06572-.01695,364.26536-93.93674.06619-.01707a34.30935,34.30935,0,0,0,24.627-41.7429l-110.341-427.87741A34.30938,34.30938,0,0,0,612.94784,114.00532Z"
+              transform="translate(-208.9778 -99.05999)" fill="#fff" />
+            <path
+              d="M590.19,252.56327,405.917,300.08359a8.01411,8.01411,0,0,1-4.00241-15.52046l184.273-47.52033A8.01412,8.01412,0,0,1,590.19,252.56327Z"
+              transform="translate(-208.9778 -99.05999)" fill="#f2f2f2" />
+            <path
+              d="M628.955,270.49906,412.671,326.27437a8.01411,8.01411,0,1,1-4.00241-15.52046l216.284-55.77531a8.01411,8.01411,0,0,1,4.00242,15.52046Z"
+              transform="translate(-208.9778 -99.05999)" fill="#f2f2f2" />
+            <path
+              d="M620.45825,369.93676l-184.273,47.52032a8.01411,8.01411,0,1,1-4.00242-15.52046l184.273-47.52032a8.01411,8.01411,0,1,1,4.00241,15.52046Z"
+              transform="translate(-208.9778 -99.05999)" fill="#f2f2f2" />
+            <path
+              d="M659.22329,387.87255l-216.284,55.77531a8.01411,8.01411,0,1,1-4.00242-15.52046l216.284-55.77531a8.01411,8.01411,0,0,1,4.00242,15.52046Z"
+              transform="translate(-208.9778 -99.05999)" fill="#f2f2f2" />
+            <path
+              d="M650.72653,487.31025l-184.273,47.52033a8.01412,8.01412,0,0,1-4.00242-15.52047l184.273-47.52032a8.01411,8.01411,0,0,1,4.00242,15.52046Z"
+              transform="translate(-208.9778 -99.05999)" fill="#f2f2f2" />
+            <path
+              d="M689.49156,505.246l-216.284,55.77532a8.01412,8.01412,0,1,1-4.00241-15.52047l216.284-55.77531a8.01411,8.01411,0,0,1,4.00242,15.52046Z"
+              transform="translate(-208.9778 -99.05999)" fill="#f2f2f2" />
+            <path
+              d="M374.45884,348.80871l-65.21246,16.817a3.847,3.847,0,0,1-4.68062-2.76146L289.5963,304.81607a3.847,3.847,0,0,1,2.76145-4.68061l65.21247-16.817a3.847,3.847,0,0,1,4.68061,2.76145l14.96947,58.04817A3.847,3.847,0,0,1,374.45884,348.80871Z"
+              transform="translate(-208.9778 -99.05999)" fill="#e6e6e6" />
+            <path
+              d="M404.72712,466.1822l-65.21247,16.817a3.847,3.847,0,0,1-4.68062-2.76146l-14.96946-58.04816A3.847,3.847,0,0,1,322.626,417.509l65.21246-16.817a3.847,3.847,0,0,1,4.68062,2.76145l14.96946,58.04817A3.847,3.847,0,0,1,404.72712,466.1822Z"
+              transform="translate(-208.9778 -99.05999)" fill="#e6e6e6" />
+            <path
+              d="M434.99539,583.55569l-65.21246,16.817a3.847,3.847,0,0,1-4.68062-2.76145l-14.96946-58.04817a3.847,3.847,0,0,1,2.76145-4.68062l65.21247-16.817a3.847,3.847,0,0,1,4.68061,2.76146l14.96947,58.04816A3.847,3.847,0,0,1,434.99539,583.55569Z"
+              transform="translate(-208.9778 -99.05999)" fill="#e6e6e6" />
+            <path
+              d="M863.63647,209.0517H487.31811a48.17928,48.17928,0,0,0-48.125,48.12512V699.05261a48.17924,48.17924,0,0,0,48.125,48.12507H863.63647a48.17924,48.17924,0,0,0,48.125-48.12507V257.17682A48.17928,48.17928,0,0,0,863.63647,209.0517Z"
+              transform="translate(-208.9778 -99.05999)" fill="#e6e6e6" />
+            <path
+              d="M863.637,222.90589H487.31811a34.30948,34.30948,0,0,0-34.271,34.27093V699.05261a34.30947,34.30947,0,0,0,34.271,34.27088H863.637a34.30936,34.30936,0,0,0,34.27051-34.27088V257.17682A34.30937,34.30937,0,0,0,863.637,222.90589Z"
+              transform="translate(-208.9778 -99.05999)" fill="#fff" />
+            <circle cx="694.19401" cy="614.02963" r="87.85039" />
+            <path
+              d="M945.18722,701.63087H914.63056V671.07421a11.45875,11.45875,0,0,0-22.9175,0v30.55666H861.1564a11.45875,11.45875,0,0,0,0,22.9175h30.55666V755.105a11.45875,11.45875,0,1,0,22.9175,0V724.54837h30.55666a11.45875,11.45875,0,0,0,0-22.9175Z"
+              transform="translate(-208.9778 -99.05999)" fill="#fff" />
+            <path
+              d="M807.00068,465.71551H616.699a8.01412,8.01412,0,1,1,0-16.02823H807.00068a8.01412,8.01412,0,0,1,0,16.02823Z"
+              transform="translate(-208.9778 -99.05999)" fill="#e6e6e6" />
+            <path
+              d="M840.05889,492.76314H616.699a8.01412,8.01412,0,1,1,0-16.02823H840.05889a8.01411,8.01411,0,1,1,0,16.02823Z"
+              transform="translate(-208.9778 -99.05999)" fill="#e6e6e6" />
+            <path
+              d="M807.00068,586.929H616.699a8.01412,8.01412,0,1,1,0-16.02823H807.00068a8.01411,8.01411,0,0,1,0,16.02823Z"
+              transform="translate(-208.9778 -99.05999)" fill="#e6e6e6" />
+            <path
+              d="M840.05889,613.97661H616.699a8.01412,8.01412,0,1,1,0-16.02823H840.05889a8.01412,8.01412,0,1,1,0,16.02823Z"
+              transform="translate(-208.9778 -99.05999)" fill="#e6e6e6" />
+            <path
+              d="M574.07028,505.04162H506.72434a3.847,3.847,0,0,1-3.84278-3.84278V441.25158a3.847,3.847,0,0,1,3.84278-3.84278h67.34594a3.847,3.847,0,0,1,3.84278,3.84278v59.94726A3.847,3.847,0,0,1,574.07028,505.04162Z"
+              transform="translate(-208.9778 -99.05999)" fill="#e6e6e6" />
+            <path
+              d="M574.07028,626.25509H506.72434a3.847,3.847,0,0,1-3.84278-3.84278V562.46505a3.847,3.847,0,0,1,3.84278-3.84278h67.34594a3.847,3.847,0,0,1,3.84278,3.84278v59.94726A3.847,3.847,0,0,1,574.07028,626.25509Z"
+              transform="translate(-208.9778 -99.05999)" fill="#e6e6e6" />
+            <path
+              d="M807.21185,330.781H666.91017a8.01411,8.01411,0,0,1,0-16.02823H807.21185a8.01411,8.01411,0,0,1,0,16.02823Z"
+              transform="translate(-208.9778 -99.05999)" fill="#ccc" />
+            <path
+              d="M840.27007,357.82862H666.91017a8.01411,8.01411,0,1,1,0-16.02822h173.3599a8.01411,8.01411,0,0,1,0,16.02822Z"
+              transform="translate(-208.9778 -99.05999)" fill="#ccc" />
+            <path
+              d="M635.85911,390.6071H506.51316a3.847,3.847,0,0,1-3.84277-3.84277V285.81706a3.847,3.847,0,0,1,3.84277-3.84277H635.85911a3.847,3.847,0,0,1,3.84277,3.84277V386.76433A3.847,3.847,0,0,1,635.85911,390.6071Z"
+              transform="translate(-208.9778 -99.05999)" />
+          </svg>
+        </div>
+        <div class="grid gap-2">
+          <p class="text-xl font-semibold">No customer found.</p>
+          <p class="text-sm text-center">There are no Customer available at the moment. <br />Click "Add Customer" to
+            create a new customer profile.</p>
+        </div>
+      </div>
+    </div>
+    }
+  </section>
+
+  @if (viewMode === 'list') {
+  <cm-table [tableObject]="tableObject" [sortObj]="sortObj" (pageChangeEvent)="pageChangeEvent($event)"
+    (pageSizeChangeEvent)="pageSizeChangeEvent($event)">
+    <ng-template cmTable name="Customer" let-data="data">
+      <div class="flex items-center gap-3">
+        <div
+          class="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-xs">
+          {{ data.firstName.charAt(0) }}
+        </div>
+        <div>
+          <div class="font-medium text-gray-900 dark:text-white">{{ data.firstName }} {{ data.lastName }}</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400">{{ data.email }}</div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template cmTable name="Status" let-data="data">
+      <div class="flex items-center gap-3">
+        <span [class]="getStatusClass(data.status)">{{ data.status }}</span>
+      </div>
+    </ng-template>
+    <ng-template cmTable name="Total Spent" let-data="data">
+      <div class="flex items-center gap-3">
+        <span class="text-right font-medium text-gray-900 dark:text-white">{{ data.totalSpent }}</span>
+      </div>
+    </ng-template>
+    <ng-template cmTable name="Last Order" let-data="data">
+      <div class="flex items-center gap-3">
+        <span class="text-right font-medium text-gray-900 dark:text-white">{{ data.lastOrderDate | date:'yy-MM-dd'
+          }}</span>
+      </div>
+    </ng-template>
+    <!-- Action Column -->
+    <ng-template cmTable name="Action" let-data="data">
+      <div class="flex items-center space-x-2 text-sm">
+        <button (click)="addEditCustomer(data.customerId)"
+          class="text-gray-400 hover:text-blue-600 transition-colors p-1" title="Edit">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+            </path>
+          </svg>
+        </button>
+        <button (click)="customerDelete(data)" class="text-gray-400 hover:text-red-600 transition-colors p-1 ml-2"
+          title="Delete">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+            </path>
+          </svg>
+        </button>
+      </div>
+    </ng-template>
+  </cm-table>
+  } @else {
+    @if (tableObject.rows?.length > 0) {
+  <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm overflow-hidden">
+    <div class="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      @for (item of tableObject.rows; track item.customerId) {
+      <article class="customer-tile-card">
+        <div class="customer-tile-head">
+          <div class="customer-avatar">
+            {{ getCustomerInitial(item) }}
+          </div>
+          <div class="min-w-0">
+            <p class="customer-name">{{ item.firstName }} {{ item.lastName }}</p>
+            <p class="customer-email">{{ item.email }}</p>
+          </div>
+        </div>
+        <div class="customer-meta">
+          <span [class]="getStatusClass(item.status)">{{ item.status }}</span>
+          <span class="customer-phone">{{ item.phoneNumber || '-' }}</span>
+        </div>
+        <div class="customer-actions">
+          <button (click)="addEditCustomer(item.customerId)" class="customer-action customer-action-edit" title="Edit">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+              </path>
+            </svg>
+            <span>Edit</span>
+          </button>
+          <button (click)="customerDelete(item)" class="customer-action customer-action-delete" title="Delete">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+              </path>
+            </svg>
+            <span>Delete</span>
+          </button>
+        </div>
+      </article>
+      }
+    </div>
+    <cm-table-pagination [tableObject]="tableObject" (pageChange)="pageChangeEvent($event)"
+      (pageSizeChange)="pageSizeChangeEvent($event)">
+    </cm-table-pagination>
+  </div>
+  } @else {
+  <div class="p-6 text-center text-sm text-gray-500 dark:text-gray-400">No customers found.</div>
+  }
+  }
+</div>
+<app-popup #popup [config]="popupConfig" (closeEvent)="closePopup()" (buttonClick)="handlePopupAction($event)">
+  <ng-container>
+    @if(popupConfig.popupFunctionalityType === 'delete'){
+    <app-customer-delete #deleteCustomer (close)="closePopup()" [customerId]="selectedCustomerId"
+      (deleted)="onCustomerDelete()">
+    </app-customer-delete>
+    }
+    @if(popupConfig.popupFunctionalityType === 'addeditCustomer'){
+    <app-customer-add-edit #addeditCustomer (close)="closePopup()" [id]="selectedCustomerId"
+      (addedited)="onCustomerAddEdited()">
+    </app-customer-add-edit>
+    }
+  </ng-container>
+</app-popup>

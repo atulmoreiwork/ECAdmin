@@ -1,0 +1,11 @@
+<div [ngClass]="{
+  'bg-white dark:bg-gray-800 rounded-lg': true,
+  'border border-gray-200 dark:border-gray-700': border,
+  'hover:shadow-lg transition-shadow': hoverable
+}" [class]="padding">
+    <div *ngIf="title" class="mb-4">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ title }}</h3>
+        <p *ngIf="subtitle" class="text-sm text-gray-600 dark:text-gray-400 mt-1">{{ subtitle }}</p>
+    </div>
+    <ng-content></ng-content>
+</div>

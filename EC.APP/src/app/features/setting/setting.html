@@ -1,0 +1,284 @@
+<div class="p-8 animate-fade-in max-w-5xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Settings</h2>
+        <button (click)="resetBranding()" *ngIf="activeTab === 'branding'"
+            class="text-sm text-gray-500 dark:text-gray-400 hover:text-red-600 underline">Reset Branding</button>
+    </div>
+
+    <div
+        class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm overflow-hidden min-h-[600px] flex flex-col transition-colors">
+
+        <!-- Tabs -->
+        <div class="border-b border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50">
+            <nav class="flex -mb-px">
+                <button (click)="activeTab = 'general'" [class]="getTabClass('general')">General</button>
+                <button (click)="activeTab = 'branding'" [class]="getTabClass('branding')">Branding</button>
+                <button (click)="activeTab = 'security'" [class]="getTabClass('security')">Security</button>
+            </nav>
+        </div>
+
+        <div class="p-8 flex-1">
+
+            <!-- General Section -->
+            <div *ngIf="activeTab === 'general'" class="space-y-8 animate-fade-in max-w-2xl">
+                <div *ngIf="users != null || users != undefined">
+                    <h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-white">Profile Information</h3>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Update your account's public profile
+                        information.</p>
+
+                    <div class="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-6 gap-x-6">
+                        <div class="sm:col-span-3">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">First name</label>
+                            <input type="text" [value]="users.firstName"
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm outline-none bg-white dark:bg-gray-700 dark:text-white">
+                        </div>
+                        <div class="sm:col-span-3">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Last name</label>
+                            <input type="text" [value]="users.lastName"
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm outline-none bg-white dark:bg-gray-700 dark:text-white">
+                        </div>
+                        <div class="sm:col-span-4">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email
+                                address</label>
+                            <input type="email" [value]="users.email"
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm outline-none bg-white dark:bg-gray-700 dark:text-white">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Branding Section -->
+            <div *ngIf="activeTab === 'branding'" class="grid grid-cols-1 lg:grid-cols-2 gap-12 animate-fade-in">
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-white">Visual Identity</h3>
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Manage branding for both admin and
+                            client portals.</p>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button type="button" (click)="onBrandingSectionChange('admin')"
+                            [ngClass]="selectedBrandingFor === 'admin'
+                                ? 'bg-blue-600 text-white border-blue-600'
+                                : 'bg-white text-gray-700 border-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600'"
+                            class="px-4 py-2 text-sm font-medium border rounded-lg transition-colors">
+                            Admin Portal Branding
+                        </button>
+                        <button type="button" (click)="onBrandingSectionChange('client')"
+                            [ngClass]="selectedBrandingFor === 'client'
+                                ? 'bg-blue-600 text-white border-blue-600'
+                                : 'bg-white text-gray-700 border-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600'"
+                            class="px-4 py-2 text-sm font-medium border rounded-lg transition-colors">
+                            Client Portal Branding
+                        </button>
+                    </div>
+
+                    <div *ngIf="isBrandingLoading" class="text-sm text-gray-500 dark:text-gray-400">
+                        Loading branding...
+                    </div>
+
+                    <div class="space-y-4 pt-2">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Company
+                                Name</label>
+                            <input type="text" [(ngModel)]="branding.companyName" (ngModelChange)="applyPreview()"
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm outline-none bg-white dark:bg-gray-700 dark:text-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Logo URL</label>
+                            <input type="text" [(ngModel)]="branding.logoUrl" (ngModelChange)="applyPreview()"
+                                placeholder="https://example.com/logo.png"
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm outline-none bg-white dark:bg-gray-700 dark:text-white">
+                        </div>
+                    </div>
+
+                    <hr class="border-gray-100 dark:border-gray-700">
+
+                    <div class="space-y-4">
+                        <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Colors & Theme</h4>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Primary
+                                    Color</label>
+                                <div class="mt-1 flex items-center gap-2">
+                                    <input type="color" [(ngModel)]="branding.primaryColor"
+                                        (ngModelChange)="applyPreview()"
+                                        class="h-9 w-12 p-0.5 border border-gray-300 dark:border-gray-600 rounded cursor-pointer bg-white dark:bg-gray-700">
+                                    <input type="text" [(ngModel)]="branding.primaryColor"
+                                        (ngModelChange)="applyPreview()"
+                                        class="block w-full px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded text-xs font-mono uppercase bg-white dark:bg-gray-700 dark:text-white">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Secondary
+                                    Color</label>
+                                <div class="mt-1 flex items-center gap-2">
+                                    <input type="color" [(ngModel)]="branding.secondaryColor"
+                                        (ngModelChange)="applyPreview()"
+                                        class="h-9 w-12 p-0.5 border border-gray-300 dark:border-gray-600 rounded cursor-pointer bg-white dark:bg-gray-700">
+                                    <input type="text" [(ngModel)]="branding.secondaryColor"
+                                        (ngModelChange)="applyPreview()"
+                                        class="block w-full px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded text-xs font-mono uppercase bg-white dark:bg-gray-700 dark:text-white">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Sidebar
+                                    Bg</label>
+                                <div class="mt-1 flex items-center gap-2">
+                                    <input type="color" [(ngModel)]="branding.sidebarColor"
+                                        (ngModelChange)="applyPreview()"
+                                        class="h-9 w-12 p-0.5 border border-gray-300 dark:border-gray-600 rounded cursor-pointer bg-white dark:bg-gray-700">
+                                    <input type="text" [(ngModel)]="branding.sidebarColor"
+                                        (ngModelChange)="applyPreview()"
+                                        class="block w-full px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded text-xs font-mono uppercase bg-white dark:bg-gray-700 dark:text-white">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Header
+                                    Bg</label>
+                                <div class="mt-1 flex items-center gap-2">
+                                    <input type="color" [(ngModel)]="branding.headerColor"
+                                        (ngModelChange)="applyPreview()"
+                                        class="h-9 w-12 p-0.5 border border-gray-300 dark:border-gray-600 rounded cursor-pointer bg-white dark:bg-gray-700">
+                                    <input type="text" [(ngModel)]="branding.headerColor"
+                                        (ngModelChange)="applyPreview()"
+                                        class="block w-full px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded text-xs font-mono uppercase bg-white dark:bg-gray-700 dark:text-white">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Default
+                                Theme</label>
+                            <div class="mt-2 flex gap-4">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" [name]="'theme-' + selectedBrandingFor" value="light"
+                                        [(ngModel)]="branding.themeMode" (ngModelChange)="applyPreview()"
+                                        class="text-blue-600 focus:ring-blue-500">
+                                    <span class="text-sm text-gray-700 dark:text-gray-300">Light</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" [name]="'theme-' + selectedBrandingFor" value="dark"
+                                        [(ngModel)]="branding.themeMode" (ngModelChange)="applyPreview()"
+                                        class="text-blue-600 focus:ring-blue-500">
+                                    <span class="text-sm text-gray-700 dark:text-gray-300">Dark (Beta)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="border-gray-100 dark:border-gray-700">
+
+                    <div class="space-y-4">
+                        <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Typography</h4>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Font
+                                Family</label>
+                            <select [(ngModel)]="branding.fontFamily" (ngModelChange)="applyPreview()"
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm outline-none bg-white dark:bg-gray-700 dark:text-white">
+                                <option value="Inter">Inter (Default)</option>
+                                <option value="Roboto">Roboto</option>
+                                <option value="Open Sans">Open Sans</option>
+                                <option value="Lato">Lato</option>
+                                <option value="Segoe UI">Segoe UI</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex items-center gap-4">
+                        <button (click)="saveSettings()" [disabled]="isSaving"
+                            class="bg-blue-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700 shadow-sm transition-colors w-full sm:w-auto">
+                            {{ isSaving ? 'Saving...' : 'Save Changes' }}
+                        </button>
+                        <span class="text-xs text-gray-500 dark:text-gray-400 italic">Changes apply instantly to
+                            preview. Save to persist.</span>
+                    </div>
+
+                    <div *ngIf="feedbackMessage" class="text-sm px-3 py-2 rounded-lg" [ngClass]="feedbackType === 'success'
+                        ? 'bg-green-50 border border-green-200 text-green-700'
+                        : 'bg-red-50 border border-red-200 text-red-700'">
+                        {{ feedbackMessage }}
+                    </div>
+                </div>
+
+                <!-- Preview Panel -->
+                <div class="hidden lg:block">
+                    <div class="sticky top-6">
+                        <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                            Live Preview</h3>
+                        <div class="border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg overflow-hidden bg-gray-50 dark:bg-gray-900 flex flex-col h-[500px]"
+                            [style.font-family]="branding.fontFamily">
+                            <!-- Mock Header -->
+                            <div class="h-14 border-b border-gray-200 dark:border-gray-700 flex items-center px-4 justify-between"
+                                [style.background-color]="branding.headerColor">
+                                <span class="font-semibold text-gray-800"
+                                    [style.color]="branding.headerColor === '#FFFFFF' ? '#1F2937' : '#FFFFFF'">{{
+                                    branding.companyName }}</span>
+                                <div class="flex gap-2">
+                                    <div class="w-24 h-8 bg-gray-100 dark:bg-white/10 rounded"></div>
+                                    <div class="w-8 h-8 rounded-full bg-gray-200 dark:bg-white/20"></div>
+                                </div>
+                            </div>
+                            <div class="flex flex-1 overflow-hidden">
+                                <!-- Mock Sidebar -->
+                                <div class="w-16 border-r border-gray-200 dark:border-gray-700 flex flex-col items-center py-4 gap-4"
+                                    [style.background-color]="branding.sidebarColor">
+                                    <div class="w-8 h-8 rounded-md" [style.background-color]="branding.primaryColor">
+                                    </div>
+                                    <div class="w-8 h-8 rounded-md bg-gray-200/50 dark:bg-white/10"></div>
+                                    <div class="w-8 h-8 rounded-md bg-gray-200/50 dark:bg-white/10"></div>
+                                </div>
+                                <!-- Mock Content -->
+                                <div class="flex-1 p-6 space-y-4 bg-gray-50/50 dark:bg-gray-800/50">
+                                    <div
+                                        class="h-32 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-4 shadow-sm">
+                                        <div class="h-4 w-1/3 bg-gray-100 dark:bg-gray-600 rounded mb-4"></div>
+                                        <div class="h-8 w-1/2 rounded"
+                                            [style.background-color]="branding.secondaryColor"></div>
+                                    </div>
+                                    <div
+                                        class="h-48 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-4 shadow-sm">
+                                        <div class="flex justify-between mb-4">
+                                            <div class="h-4 w-1/4 bg-gray-100 dark:bg-gray-600 rounded"></div>
+                                            <div class="h-8 w-24 rounded text-white text-xs flex items-center justify-center"
+                                                [style.background-color]="branding.primaryColor">Action</div>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <div class="h-8 w-full bg-gray-50 dark:bg-gray-600/50 rounded"></div>
+                                            <div class="h-8 w-full bg-gray-50 dark:bg-gray-600/50 rounded"></div>
+                                            <div class="h-8 w-full bg-gray-50 dark:bg-gray-600/50 rounded"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-center text-gray-400 mt-2">Preview illustrates layout colors and font.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Mock -->
+            <div *ngIf="activeTab === 'security'" class="space-y-6 animate-fade-in max-w-2xl">
+                <div>
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-white">Password</h3>
+                    <div class="mt-4 max-w-md space-y-4">
+                        <input type="password" placeholder="Current Password"
+                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 dark:text-white outline-none">
+                        <input type="password" placeholder="New Password"
+                            class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 dark:text-white outline-none">
+                    </div>
+                </div>
+                <div class="pt-4">
+                    <button
+                        class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-600">Update
+                        Password</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

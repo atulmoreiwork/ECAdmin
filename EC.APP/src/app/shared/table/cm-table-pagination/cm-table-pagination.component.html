@@ -1,0 +1,57 @@
+<div
+  class="flex flex-col md:flex-row items-center justify-between gap-4 py-3 px-6 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 transition-colors">
+
+  <div class="left text-xs text-gray-500 dark:text-gray-400 font-medium order-2 md:order-1">
+    Showing {{ tableObject.startIndex }} - {{ tableObject.endIndex }} of {{ tableObject.totalRecords }}
+  </div>
+
+  <div class="right flex items-center md:order-2 space-x-2">
+    <!-- 🔢 Page Size -->
+    <div class="pageSize">
+      <select (change)="pgSizeChange($event)" class="border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700
+               focus:ring-2 focus:ring-gray-400 focus:border-gray-400 dark:focus:ring-gray-500 transition">
+        <option *ngFor="let size of pageSizeList">{{ size }}</option>
+      </select>
+    </div>
+
+    <!-- 🧭 Paging Links -->
+    <nav aria-label="Pagination">
+      <ul class="inline-flex items-center">
+        <!-- First -->
+        <li [class.disabled]="tableObject.pageNumber == 1">
+          <a (click)="paging(1)" href="javascript:void(0)" class="px-3 py-1 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300
+                   hover:bg-gray-50 dark:hover:bg-gray-600 rounded-l-md text-sm font-medium transition
+                   disabled:opacity-50 disabled:cursor-not-allowed">
+            First
+          </a>
+        </li>
+
+        <!-- Page Numbers -->
+        <li *ngFor="let p of tableObject.paging">
+          <a (click)="paging(p)" href="javascript:void(0)" [ngClass]="{
+              'bg-blue-600 text-white border-blue-600 shadow-sm': p === tableObject.pageNumber,
+              'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 hover:text-blue-600 dark:hover:text-blue-400 shadow-sm': p !== tableObject.pageNumber
+            }" class="px-3 py-1 text-sm font-medium transition-colors duration-150">
+            {{ p }}
+          </a>
+        </li>
+
+        <!-- Last -->
+        <li [class.disabled]="tableObject.totalPages == tableObject.pageNumber">
+          <a (click)="paging(tableObject.totalPages)" href="javascript:void(0)" class="px-3 py-1 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300
+                   hover:bg-gray-50 dark:hover:bg-gray-600 rounded-r-md text-sm font-medium transition
+                   disabled:opacity-50 disabled:cursor-not-allowed">
+            Last
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- 🧮 Page Jump -->
+    <select class="ml-2 border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700
+             focus:ring-2 focus:ring-gray-400 focus:border-gray-400 dark:focus:ring-gray-500 transition"
+      [(ngModel)]="tableObject.pageNumber" (change)="onChange($event)">
+      <option [value]="item.key" *ngFor="let item of tableObject.pageAccessList">{{ item.value }}</option>
+    </select>
+  </div>
+</div>

@@ -1,0 +1,121 @@
+.order-tile-card {
+  background: linear-gradient(155deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+  padding: 1rem;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.order-tile-card:hover {
+  border-color: #93c5fd;
+  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.16);
+  transform: translateY(-2px);
+}
+
+.order-tile-top {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
+
+.order-tile-id {
+  color: #2563eb;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.order-tile-id:hover {
+  text-decoration: underline;
+}
+
+.order-tile-customer {
+  color: #111827;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.order-tile-meta {
+  color: #6b7280;
+  display: grid;
+  font-size: 0.78rem;
+  gap: 0.32rem;
+  margin-top: 0.7rem;
+}
+
+.order-tile-label {
+  color: #94a3b8;
+  display: inline-block;
+  min-width: 3rem;
+}
+
+.order-tile-total {
+  color: #111827;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.order-tile-actions {
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  gap: 0.55rem;
+  margin-top: 0.9rem;
+  padding-top: 0.8rem;
+}
+
+.order-tile-action {
+  align-items: center;
+  border-radius: 0.6rem;
+  display: inline-flex;
+  flex: 1;
+  font-size: 0.78rem;
+  font-weight: 600;
+  gap: 0.32rem;
+  justify-content: center;
+  padding: 0.45rem 0.2rem;
+  transition: all 0.2s ease;
+}
+
+.order-tile-action-edit {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+}
+
+.order-tile-action-delete {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+}
+
+:host-context(.dark) .order-tile-card {
+  background: linear-gradient(155deg, #111827 0%, #0f172a 100%);
+  border-color: #334155;
+}
+
+:host-context(.dark) .order-tile-customer,
+:host-context(.dark) .order-tile-total {
+  color: #f9fafb;
+}
+
+:host-context(.dark) .order-tile-label,
+:host-context(.dark) .order-tile-meta {
+  color: #9ca3af;
+}
+
+:host-context(.dark) .order-tile-actions {
+  border-color: #334155;
+}
+
+:host-context(.dark) .order-tile-action-edit {
+  background: rgba(37, 99, 235, 0.24);
+  border-color: rgba(59, 130, 246, 0.45);
+  color: #93c5fd;
+}
+
+:host-context(.dark) .order-tile-action-delete {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(248, 113, 113, 0.38);
+  color: #fca5a5;
+}
