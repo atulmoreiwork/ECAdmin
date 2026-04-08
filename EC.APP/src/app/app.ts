@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { signal } from '@angular/core';
 import { ThemeService } from './services/theme.service';
+import { Loader } from './shared/loader/loader';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Loader],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

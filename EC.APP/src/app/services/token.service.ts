@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { finalize, Observable, shareReplay, tap, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 import { TokenResponse } from '../models/login';
 
@@ -8,6 +8,7 @@ import { TokenResponse } from '../models/login';
 })
 export class TokenService {
   private session: TokenResponse | null = null;
+  private refreshTokenRequest$: Observable<TokenResponse> | null = null;
 
   constructor(private authService: AuthService) {
     this.loadSessionFromLocal();
@@ -91,10 +92,22 @@ export class TokenService {
       return throwError(() => new Error('No refresh token available'));
     }
 
-    return this.authService.refreshToken({
-      refreshToken: this.session.refreshToken,
-      accessToken: this.session.accessToken,
-      userClaimData: this.session.userClaimData
-    });
+    if (!this.refreshTokenRequest$) {
+      this.refreshTokenRequest$ = this.authService
+        .refreshToken({
+          refreshToken: this.session.refreshToken,
+          accessToken: this.session.accessToken,
+          userClaimData: this.session.userClaimData,
+        })
+        .pipe(
+          tap((tokenResponse) => this.saveSessionInLocal(tokenResponse)),
+          finalize(() => {
+            this.refreshTokenRequest$ = null;
+          }),
+          shareReplay(1)
+        );
+    }
+
+    return this.refreshTokenRequest$;
   }
 }

@@ -51,7 +51,6 @@ export const AuthInterceptor: HttpInterceptorFn = (
           return tokenService.refreshToken().pipe(
             switchMap((newToken) => {
               console.log('[AuthInterceptor] Token refreshed');
-              tokenService.saveSessionInLocal(newToken);
 
               const retryReq = req.clone({
                 setHeaders: {

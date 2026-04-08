@@ -146,8 +146,9 @@ public class UserRepository : IUserRepository
                 param.Add("@PhoneNumber", string.IsNullOrEmpty(objUser.PhoneNumber) ? null : (object)objUser.PhoneNumber);
                 param.Add("@Status", string.IsNullOrEmpty(objUser.Status) ? null : (object)objUser.Status);
                 param.Add("@RefreshToken", string.IsNullOrEmpty(objUser.RefreshToken) ? null : (object)objUser.RefreshToken);
+                param.Add("@RefreshTokenExpiryTime", objUser.RefreshTokenExpiryTime);
                 param.Add("@Flag", objUser.Flag);
-                userId = await con.ExecuteScalarAsync<int>("SELECT p_aud_users(p_userid => @UserId, p_roleid => @RoleId, p_firstname => @FirstName, p_lastname => @LastName, p_email => @Email, p_password => @Password, p_phonenumber => @PhoneNumber, p_status => @Status, p_refreshtoken => @RefreshToken, p_tenantid => @TenantId, p_flag => @Flag)", param);
+                userId = await con.ExecuteScalarAsync<int>("SELECT p_aud_users(p_userid => @UserId, p_roleid => @RoleId, p_firstname => @FirstName, p_lastname => @LastName, p_email => @Email, p_password => @Password, p_phonenumber => @PhoneNumber, p_status => @Status, p_refreshtoken => @RefreshToken, p_refreshtokenexpirytime => @RefreshTokenExpiryTime, p_tenantid => @TenantId, p_flag => @Flag)", param);
             }
         }
         catch (Exception ex)

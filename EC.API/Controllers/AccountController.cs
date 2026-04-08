@@ -70,13 +70,22 @@ public class AccountController : ControllerBase
     [HttpPost("Refresh")]
     public IActionResult RefreshToken([FromBody] TokenModel tokenModel)
     {
-        if (tokenModel is null)
+        if (tokenModel is null || string.IsNullOrWhiteSpace(tokenModel.AccessToken) || string.IsNullOrWhiteSpace(tokenModel.RefreshToken))
             return BadRequest("Invalid client request");
 
         string accessToken = tokenModel.AccessToken;
         string refreshToken = tokenModel.RefreshToken;
 
-        var principal = _tokenRepository.GetPrincipalFromExpiredToken(accessToken);
+        ClaimsPrincipal? principal;
+        try
+        {
+            principal = _tokenRepository.GetPrincipalFromExpiredToken(accessToken);
+        }
+        catch
+        {
+            return BadRequest("Invalid client request");
+        }
+
         var loginName = principal?.Identity?.Name;
         var objUser = _userRepository.GetUserByUserName(loginName!).Result;
         if (objUser is null || objUser.RefreshToken != refreshToken || objUser.RefreshTokenExpiryTime <= DateTime.Now)
@@ -85,6 +94,7 @@ public class AccountController : ControllerBase
         var newAccessToken = _tokenRepository.GenerateToken(principal!.Claims);
         var newRefreshToken = _tokenRepository.GenerateRefreshToken();
         objUser.RefreshToken = newRefreshToken;
+        objUser.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
         objUser.Flag = 2;
         _userRepository.AddUpdateUser(objUser);
         var userClaimData = new UserClaimData
