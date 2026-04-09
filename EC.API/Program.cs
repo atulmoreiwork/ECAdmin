@@ -7,6 +7,7 @@ using System.Text;
 using EC.API.Models;
 using Microsoft.AspNetCore.Http.Features;
 using OfficeOpenXml;
+using Microsoft.Extensions.FileProviders;
 var builder = WebApplication.CreateBuilder(args);
 
 ConfigurationManager configuration = builder.Configuration;
@@ -78,6 +79,14 @@ app.UseCors(builder =>
 app.UseSwagger();
 app.UseSwaggerUI();
 //}
+
+var contentPath = Path.Combine(Directory.GetCurrentDirectory(), "ECContent");
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(contentPath),
+    RequestPath = "/ECContent"
+});
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
