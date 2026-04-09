@@ -1,6 +1,5 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://EC.API.azurewebsites.net/api',
-    contentUrl: 'D:\\ContentFolderPath' 
+    apiUrl: 'https://ecadmin.onrender.com/api',
+    contentUrl: 'D:\\ContentFolderPath'
 };
-  
