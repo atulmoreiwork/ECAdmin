@@ -82,6 +82,12 @@ app.UseSwaggerUI();
 
 var contentPath = Path.Combine(Directory.GetCurrentDirectory(), "ECContent");
 
+// ✅ Create if not exists
+if (!Directory.Exists(contentPath))
+{
+    Directory.CreateDirectory(contentPath);
+}
+
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(contentPath),
