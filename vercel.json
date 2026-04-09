@@ -1,5 +1,17 @@
 {
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
+  "builds": [
+    {
+      "src": "EC.APP/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist/EC.APP/browser"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "^/(.*)$",
+      "dest": "/index.html"
+    }
   ]
 }
